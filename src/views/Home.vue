@@ -1,18 +1,58 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="home" class="e3e3e3">
+    <el-container>
+      <el-main>
+        <!-- 轮播图(slideshow) -->
+        <el-carousel :interval="4000" type="card" height="200px">
+          <el-carousel-item v-for="(item, index) in bannerImg" :key="index">
+            <router-link to="/">
+              <img :src="item" alt="">
+            </router-link>
+          </el-carousel-item>
+        </el-carousel>
+        <!-- 文章区 -->
+        <ArticleList></ArticleList>
+      </el-main>
+      <!-- 右侧 -->
+      <Aside></Aside>
+    </el-container>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import ArticleList from '@/views/Article/ArticleList.vue'
+import Aside from '@/views/Aside.vue'
 export default {
-  name: 'Home',
+  data() {
+    return {
+      bannerImg: [
+        require('../static/images/login.jpg'),
+        require('../static/images/angularjs.jpg'),
+        require('../static/images/reactjs.jpg'),
+        require('../static/images/vuejs.jpg'),
+        require('../static/images/background.jpg'),
+      ],
+      
+    }
+  },
   components: {
-    HelloWorld
+    ArticleList,
+    Aside
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.el-container {
+  .el-main {
+    .el-carousel {
+      .el-carousel__item {
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+</style>

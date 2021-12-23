@@ -1,32 +1,30 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <Header></Header>
+    <Login v-show="isLogin"></Login>
     <router-view/>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+import Header from './views/Header.vue'
+import Login from './views/Login.vue'
+export default {
+  data() {
+    return {
+      isLogin: false
     }
+  },
+  components: {
+    Header,
+    Login
   }
+}
+</script>
+
+<style lang="scss" scoped>
+.el-container {
+  width: 65%;
+  margin: 0 auto;
 }
 </style>

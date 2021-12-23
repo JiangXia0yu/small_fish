@@ -1,0 +1,109 @@
+@font-face {
+  font-family: "iconfont"; /* Project id  */
+  src: url('iconfont.ttf?t=1640179577485') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-html5:before {
+  content: "\f01ee";
+}
+
+.icon-jisuanji:before {
+  content: "\e60b";
+}
+
+.icon-zhinengsuanfa:before {
+  content: "\e6c8";
+}
+
+.icon-chrome:before {
+  content: "\e647";
+}
+
+.icon-bianma:before {
+  content: "\e62f";
+}
+
+.icon-GitHub:before {
+  content: "\ea0a";
+}
+
+.icon-JavaScript:before {
+  content: "\e704";
+}
+
+.icon-tubiaozhizuomobanyihuifu-:before {
+  content: "\e6a1";
+}
+
+.icon-WEBqianduan:before {
+  content: "\e61c";
+}
+
+.icon-React:before {
+  content: "\e799";
+}
+
+.icon-jQuery:before {
+  content: "\e79a";
+}
+
+.icon-_houduankaifa:before {
+  content: "\e610";
+}
+
+.icon-_rengongzhineng:before {
+  content: "\e612";
+}
+
+.icon-css:before {
+  content: "\e61e";
+}
+
+.icon-java:before {
+  content: "\e639";
+}
+
+.icon-nodejs:before {
+  content: "\e683";
+}
+
+.icon-typescript:before {
+  content: "\e6a3";
+}
+
+.icon-vue:before {
+  content: "\e69a";
+}
+
+.icon-bootstrap:before {
+  content: "\e6cd";
+}
+
+.icon-anquanyinsi:before {
+  content: "\e98b";
+}
+
+.icon-dicengjiagou:before {
+  content: "\e98c";
+}
+
+.icon-kaiyuan:before {
+  content: "\e627";
+}
+
+.icon-cyuyan:before {
+  content: "\e61a";
+}
+
+.icon-Python:before {
+  content: "\e891";
+}
+

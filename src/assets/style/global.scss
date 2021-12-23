@@ -1,0 +1,38 @@
+#home, #article, #category {
+  .el-container {
+    width: 65%;
+    margin: 0 auto;
+    .el-aside {
+      padding-top: 20px;
+      .box-card {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+
+.e3e3e3 {
+  background-color: rgba(227, 227, 227, .5);
+}
+
+.black {
+  background-color: rgba($color: #000000, $alpha: 0.5) !important;
+  border-color: rgba($color: #000000, $alpha: 0.5);
+  color: #fff !important;
+}
+
+.aquamarine {
+  background-color: rgba(127, 255, 212, .7);
+}
+
+.skyblue {
+  color: #409EFF
+}
+
+.color_aqua {
+  color: aquamarine;
+}
+
+.bg_skyblue {
+  background-color: rgba(64, 158, 255, .7)
+}
