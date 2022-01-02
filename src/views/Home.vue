@@ -1,22 +1,19 @@
 <template>
-  <div id="home" class="e3e3e3">
-    <el-container>
-      <el-main>
-        <!-- 轮播图(slideshow) -->
-        <el-carousel :interval="4000" type="card" height="200px">
-          <el-carousel-item v-for="(item, index) in bannerImg" :key="index">
-            <router-link to="/">
-              <img :src="item" alt="">
-            </router-link>
-          </el-carousel-item>
-        </el-carousel>
-        <!-- 文章区 -->
-        <ArticleList></ArticleList>
-      </el-main>
-      <!-- 右侧 -->
-      <Aside></Aside>
-    </el-container>
-  </div>
+  <el-container>
+    <el-main id="home">
+      <!-- 轮播图(slideshow) -->
+      <el-carousel :interval="4000" type="card" height="200px">
+        <el-carousel-item v-for="(item, index) in bannerImg" :key="index">
+          <router-link to="/">
+            <img :src="item" alt="">
+          </router-link>
+        </el-carousel-item>
+      </el-carousel>
+      <!-- 文章区 -->
+      <ArticleList></ArticleList>
+    </el-main>
+    <Aside></Aside>
+  </el-container>
 </template>
 
 <script>
@@ -34,6 +31,10 @@ export default {
       ],
       
     }
+  },
+  beforeDestroy() {
+    let active = document.querySelector('.menus');
+    active.style.backgroundColor = ''
   },
   components: {
     ArticleList,

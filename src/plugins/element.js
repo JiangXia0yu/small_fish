@@ -15,7 +15,13 @@ import {
   Table,
   Calendar,
   Tabs,
-  TabPane
+  TabPane,
+  Skeleton,
+  SkeletonItem,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  Avatar
 } from 'element-ui'
 
 Vue.use(Header)
@@ -34,3 +40,9 @@ Vue.use(Table)
 Vue.use(Calendar)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Skeleton)
+Vue.use(SkeletonItem)
+Vue.use(Dropdown)
+Vue.use(DropdownItem)
+Vue.use(DropdownMenu)
+Vue.use(Avatar)

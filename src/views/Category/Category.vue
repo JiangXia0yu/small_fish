@@ -1,48 +1,50 @@
 <template>
-  <div id="category" class="e3e3e3">
-    <el-container>
-      <el-main>
-        <el-tabs v-model="activeName" @click="handleClick">
-          <el-tab-pane 
-          v-for="item in tag"
-          :key="item.id"
-          :label="item.tag_name" 
-          :name="item.name"
-          >
-            <!-- <el-card class="box-card">
-              {{item.tag_name}}
-            </el-card> -->
-            <ArticleList></ArticleList>
-          </el-tab-pane>
-        </el-tabs>
-      </el-main>
-      <Aside></Aside>
-    </el-container>
-  </div>
+  <el-container>
+    <el-main id="category">
+      <el-tabs v-model="activeName" :tab-position="tabPosition">
+        <el-tab-pane 
+        v-for="item in tag"
+        :key="item.id"
+        :label="item.tag_name" 
+        :name="item.name"
+        @click="log"
+        >
+          <ArticleList></ArticleList>
+        </el-tab-pane>
+      </el-tabs>
+    </el-main>
+    <Aside></Aside>
+  </el-container>
 </template>
 
 <script>
-import tag from '@/plugins/tag.json'
-import Aside from '../Aside.vue'
 import ArticleList from '../Article/ArticleList.vue'
+import Aside from '@/views/Aside.vue'
+import tag from '@/plugins/tag.json'
+import bus from '@/EventBus/eventbus.js'
 export default {
   data() {
     return {
       tag: [],
-      activeName: 'h5'
+      activeName: 'h5',
+      tabPosition: 'left',
+      isId: ''
     }
   },
   created() {
     this.tag = tag.tag
+    bus.$on("parentEmitId", id => {
+      this.activeName = id
+    })
   },
   methods: {
-    handleClick() {
-      console.log('123');
+    log() {
+      console.log(this.activeName)
     }
   },
   components: {
-    Aside,
-    ArticleList
+    ArticleList,
+    Aside
   }
 }
 </script>

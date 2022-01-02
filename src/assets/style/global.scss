@@ -1,13 +1,11 @@
-#home, #article, #category {
-  .el-container {
-    width: 65%;
-    margin: 0 auto;
-    .el-aside {
-      padding-top: 20px;
-      .box-card {
-        margin-bottom: 20px;
-      }
-    }
+html {
+  font-family: SF Pro SC,SF Pro Text,SF Pro Icons,PingFang SC,Helvetica Neue,Helvetica,Arial,微软雅黑,microsoft yahei,sans-serif;
+}
+
+.el-aside {
+  padding-top: 20px;
+  .box-card {
+    margin-bottom: 20px;
   }
 }
 
@@ -26,7 +24,7 @@
 }
 
 .skyblue {
-  color: #409EFF
+  color: #409EFF;
 }
 
 .color_aqua {
@@ -35,4 +33,14 @@
 
 .bg_skyblue {
   background-color: rgba(64, 158, 255, .7)
+}
+
+.zZindex {
+  z-index: 99999 !important;
+}
+
+.headPhoto,.user_photo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
 }

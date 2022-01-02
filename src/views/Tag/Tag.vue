@@ -1,29 +1,40 @@
 <template>
   <el-card class="box-card tags">
     <div class="text item">
-      <router-link
+      <a
       v-for="(item, index) in tag"
       :key="index"
-      :to="{path: '/category/'+item.id}"
       class="tages"
-      :title="item.tag_name">
+      href="#/category/1"
+      :title="item.tag_name"
+      @click="emitId(item.name)"
+      >
       <span :class="item.icon" class="icon"></span>
       <span>{{item.tag_name}}&nbsp;[{{item.number}}]</span>
-      </router-link>
+      </a>
     </div>
   </el-card>
 </template>
 
 <script>
 import tag from '@/plugins/tag.json'
+import bus from '@/EventBus/eventbus.js'
 export default {
   data() {
     return {
-      tag: []
+      tag: [],
+      ist: 2
     }
   },
   created() {
     this.tag = tag.tag
+  },
+  methods: {
+    emitId(name) {
+      this.$store.state.navIndex = this.ist
+      window.localStorage.setItem('state', JSON.stringify(this.$store.state))
+      bus.$emit('parentEmitId', name)
+    }
   }
 }
 </script>

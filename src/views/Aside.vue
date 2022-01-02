@@ -20,11 +20,6 @@ import PopularArticles from '@/views/Article/PopularArticles.vue'
 import Tag from '@/views/Tag/Tag.vue'
 import Search from '@/views/Search/Search.vue'
 export default {
-  data() {
-    return {
-
-    }
-  },
   components: {
     PopularArticles,
     Tag,

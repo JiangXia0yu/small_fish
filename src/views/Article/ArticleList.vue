@@ -45,6 +45,7 @@ import articleList from '@/plugins/articleList.json'
 export default {
   data() {
     return {
+      navIndex: 0,
       isTheme: null,
       list: [], // 总数据
       newDate: '', // 获取当前时间戳
@@ -57,8 +58,6 @@ export default {
     this.list = articleList.articleList;
     this.getPageData();
     this.newDate = new Date();
-    let state = JSON.parse(localStorage.getItem('state'))
-    this.isTheme = state.isTheme
   },
   methods: {
     getPageData() {
@@ -71,6 +70,8 @@ export default {
       this.getPageData()
     },
     mouseOver(e) {
+      let state = JSON.parse(localStorage.getItem('state'))
+      this.isTheme = state.isTheme
       if(this.isTheme == false) {
         e.currentTarget.classList.add('skyblue')
       }else {

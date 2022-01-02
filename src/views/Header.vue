@@ -1,27 +1,56 @@
 <template>
   <el-header id="header">
-    <router-link to="/">
+    <a href="/">
       <img src="@/assets/logo.png" alt="LOGO" class="logo">
-    </router-link>
+    </a>
     <div class="menu">
       <router-link 
       :to="item.link"
-      v-for="(item, index) in menu" 
+      v-for="(item, index) in menu"
       :key="index"
-      @click.native="changeActive(index)"
-      :class="isActive == index ? 'active bg_skyblue' : ''"
-      class="skyblue menus"
+      @click.native="changeActive(index, $event)"
+      class="menus"
       @mouseover.native="mouseOver"
       @mouseleave.native="mouseLeave"
       >{{item.title}}</router-link>
     </div>
     <div class="user">
-      <el-button type="primary" @click="login">登录</el-button>
+      <el-button type="primary" @click="login" v-if="btnLogin">登录</el-button>
+      <!-- 用户 -->
+      <el-dropdown trigger="click" v-else>
+        <el-avatar size="medium" class="el-dropdown-link">
+          <img src="@/static/images/OIP-C.jpg" alt="">
+        </el-avatar>
+        <el-badge class="mark" :value="12" />
+        <el-dropdown-menu slot="dropdown">
+          <router-link to="/write_article">
+            <el-dropdown-item icon="el-icon-edit-outline">写文章</el-dropdown-item>
+          </router-link>
+          <router-link to="/user/1">
+            <el-dropdown-item icon="el-icon-s-home">个人主页</el-dropdown-item>
+          </router-link>
+          <router-link to="/news">
+            <el-dropdown-item icon="el-icon-bell">
+              消息提示
+              <el-badge class="mark" :value="12" />
+            </el-dropdown-item>
+          </router-link>
+          <router-link to="/settings">
+            <el-dropdown-item icon="el-icon-setting">设置</el-dropdown-item>
+          </router-link>
+          <router-link to="/" @click.native="gotoLogout">
+            <el-dropdown-item icon="el-icon-warning-outline">账号注销</el-dropdown-item>
+          </router-link>
+          <router-link to="/" @click.native="exitLogin">
+            <el-dropdown-item icon="el-icon-switch-button">退出</el-dropdown-item>
+          </router-link>
+        </el-dropdown-menu>
+      </el-dropdown>
       <el-button 
       type="text" 
       class="theme" 
       @click="cutTheme"
-      :class="this.isTheme == false ? 'el-icon-sunny bg_skyblue' : 'el-icon-moon aquamarine'"></el-button>
+      :class="this.isTheme == false ? 'el-icon-sunny' : 'el-icon-moon'"></el-button>
     </div>
   </el-header>
 </template>
@@ -42,7 +71,7 @@ export default {
         },
         {
           title: '分类',
-          link: '/category'
+          link: '/category/1'
         },
         {
           title: '关于',
@@ -50,13 +79,18 @@ export default {
         },
       ],
       isActive: 0,
-      isShowLogin: false,
-      isTheme: false
+      isShowLogin: true,
+      isTheme: false,
+      btnLogin: true
     }
   },
   created() {
     // 获取localStorage中的state对象
     let state = JSON.parse(localStorage.getItem('state'))
+    let token = JSON.parse(localStorage.getItem('token'))
+    if(token) {
+      this.btnLogin = false
+    }
     // 将state对象中的navIndex赋值给isActive来选中
     this.isActive = state.navIndex
     bus.$on('showLogin', val => {
@@ -64,15 +98,22 @@ export default {
     })
   },
   mounted() {
-    let state = JSON.parse(localStorage.getItem('state'))
-    this.isTheme = state.isTheme
-    if(this.isTheme == false) {
-      this.moon()
-    }else {
-      this.sunny()
-    }
+    this.mounte()
+  },
+  updated() {
+    this.mounte()
   },
   methods: {
+    mounte() {
+      let state = JSON.parse(localStorage.getItem('state'))
+      this.isTheme = state.isTheme
+      this.isActive = state.navIndex
+      if(this.isTheme == false) {
+        this.moon()
+      }else {
+        this.sunny()
+      }
+    },
     // 鼠标移入
     mouseOver(e) {
       if(this.isTheme == false) {
@@ -85,21 +126,17 @@ export default {
     },
     // 鼠标移出
     mouseLeave(e) {
-      let active = document.querySelector('.active');
       e.currentTarget.classList.remove('bg_skyblue')
       e.currentTarget.classList.remove('aquamarine')
-      if(this.isTheme == false) {
-        active.classList.add('bg_skyblue')
-      }else {
-        active.classList.add('aquamarine')
-      }
     },
-    changeActive(i) {
+    changeActive(i, e) {
       this.isActive = i
       if(this.isTheme == false) {
+        e.currentTarget.style.backgroundColor = 'rgba(64, 158, 255, .7)'
         this.moon()
       }else {
         this.sunny()
+        e.currentTarget.style.backgroundColor = 'rgba(127, 255, 212, .7)'
       }
       // 将isActive的值赋给vuex中state对象的navIndex属性
       this.$store.state.navIndex = this.isActive
@@ -107,8 +144,7 @@ export default {
       window.localStorage.setItem('state', JSON.stringify(this.$store.state))
     },
     login() {
-      this.isShowLogin = !this.isShowLogin
-      bus.$emit('showLogin', this.isShowLogin)
+      this.$emit('showLogin', this.isShowLogin)
     },
     cutTheme() {
       if(this.isTheme == false) {
@@ -125,84 +161,67 @@ export default {
       }
     },
     sunny() {
-      let home = document.querySelector('#home');
-      let article = document.querySelector('#article');
-      let category = document.querySelector('#category');
-      let header = document.querySelector('#header')
+      let app = document.querySelector('#app')
       let boxcard = document.querySelectorAll('.box-card');
-      let active = document.querySelector('.active');
       let menus = document.querySelectorAll('.menus')
       let tags = document.querySelectorAll('.tag')
-      let arrow_left = document.querySelector('.el-icon-arrow-left')
-      let arrow_right = document.querySelector('.el-icon-arrow-right')
-      if(this.isActive == 0) {
-        home.classList.remove('e3e3e3');
-        home.classList.add('black');
-      }else if(this.isActive == 1) {
-        article.classList.remove('e3e3e3');
-        article.classList.add('black');
-      }else if(this.isActive == 2) {
-        category.classList.remove('e3e3e3');
-        category.classList.add('black');
-        arrow_left.classList.remove('skyblue')
-        arrow_left.classList.add('color_aqua')
-        arrow_right.classList.remove('skyblue')
-        arrow_right.classList.add('color_aqua')
-      }
-      active.classList.remove('bg_skyblue')
-      active.classList.add('aquamarine')
-      header.classList.add('black')
+      app.classList.remove('e3e3e3');
+      app.classList.add('black');
       for(let i = 0;i < boxcard.length; i++) {
         boxcard[i].classList.add('black')
       }
       for(let i = 0;i < menus.length; i++) {
-        menus[i].classList.remove('skyblue')
-        menus[i].classList.add('color_aqua')
+        menus[i].style.backgroundColor = ''
+        menus[i].style.color = 'aquamarine'
       }
       for(let i = 0;i < tags.length; i++) {
-        tags[i].classList.remove('bg_skyblue')
-        tags[i].classList.add('aquamarine')
+        tags[i].style.backgroundColor = 'rgba(127, 255, 212, .7)'
       }
     },
     moon() {
-      let home = document.querySelector('#home');
-      let article = document.querySelector('#article');
-      let category = document.querySelector('#category');
-      let header = document.querySelector('#header')
+      let app = document.querySelector('#app')
       let boxcard = document.querySelectorAll('.box-card');
-      let active = document.querySelector('.active');
       let menus = document.querySelectorAll('.menus')
       let tags = document.querySelectorAll('.tag')
-      let arrow_left = document.querySelector('.el-icon-arrow-left')
-      let arrow_right = document.querySelector('.el-icon-arrow-right')
-      if(this.isActive == 0) {
-        home.classList.remove('black');
-        home.classList.add('e3e3e3');
-      }else if(this.isActive == 1) {
-        article.classList.remove('black');
-        article.classList.add('e3e3e3');
-      }else if(this.isActive == 2) {
-        category.classList.remove('black');
-        category.classList.add('e3e3e3');
-        arrow_left.classList.remove('color_aqua')
-        arrow_left.classList.add('skyblue')
-        arrow_right.classList.remove('color_aqua')
-        arrow_right.classList.add('skyblue')
-      }
-      active.classList.remove('aquamarine')
-      active.classList.add('bg_skyblue')
-      header.classList.remove('black')
+      app.classList.remove('black');
+      app.classList.add('e3e3e3');
       for(let i = 0;i < boxcard.length; i++) {
         boxcard[i].classList.remove('black')
       }
       for(let i = 0;i < menus.length; i++) {
-        menus[i].classList.remove('color_aqua')
-        menus[i].classList.add('skyblue')
+        menus[i].style.backgroundColor = ''
+        menus[i].style.color = '#409EFF'
       }
       for(let i = 0;i < tags.length; i++) {
-        tags[i].classList.remove('aquamarine')
-        tags[i].classList.add('bg_skyblue')
+        tags[i].style.backgroundColor = 'rgba(64, 158, 255, .7)'
       }
+    },
+    // 账号注销
+    gotoLogout() {
+      this.$confirm('此操作将永久删除该账号, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '注销成功!'
+        });
+        this.$store.token = false
+        window.localStorage.setItem('token', JSON.stringify(this.$store.token))
+        this.btnLogin = !this.btnLogin
+        this.$router.push('/')
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消注销'
+        });          
+      });
+    },
+    // 退出登录
+    exitLogin() {
+      window.localStorage.setItem('token', JSON.stringify(false))
+      location.reload()
     }
   }
 }
@@ -210,10 +229,13 @@ export default {
 
 <style lang="scss" scoped>
 #header {
+  width: 100%;
+  position: fixed;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid #fff !important;
+  z-index: 999;
   // logo
   img {
     height: 56px;
@@ -230,23 +252,48 @@ export default {
     a:hover {
       color: #fff;
     }
+    .menus {
+      color: #409EFF;
+    }
+    .router-link-exact-active {
+      color: #fff !important;
+      background-color: rgba(64, 158, 255, .7)
+    }
   }
   // 用户
   .user {
     display: flex;
     height: 100%;
+    .el-dropdown {
+      margin-right: 30px;
+      position: relative;
+      >.mark {
+          position: absolute;
+          top: -5px;
+          right: -10px;
+        }
+      .el-dropdown-link {
+        background-color: '';
+        cursor: pointer;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+        }
+      }
+    }
     .theme {
       padding: 9px;
       font-size: 18px;
       color: #fff;
       transition: all .5s ease-in;
     }
-    .theme:hover {
-      background-color: rgba(64, 158, 255, .7)
-    }
   }
-  .active {
-    color: #fff !important;
+  .el-icon-sunny {
+    background-color: rgba(64, 158, 255, .7);
+  }
+  .el-icon-moon {
+    background-color: rgba(127, 255, 212, .7);
   }
 }
 </style>
