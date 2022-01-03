@@ -17,20 +17,26 @@
         <div class="text item">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="文章" name="article">
-              <!-- <div class="article"> -->
                 <ArticleList></ArticleList>
-              <!-- </div> -->
             </el-tab-pane>
             <el-tab-pane label="关注" name="concern">
               <div class="concern" v-for="(item, index) in concern" :key="index">
-                <img src="@/static/images/OIP-C.jpg" alt="" class="headPhoto">
-                <router-link to="user/1">{{item}}</router-link>
+                <div class="info">
+                  <img src="@/static/images/OIP-C.jpg" alt="" class="headPhoto">
+                  <router-link to="/user/1">{{item.name}}</router-link>
+                </div>
+                <el-button type="success" v-if="item.type">√ 已关注</el-button>
+                <el-button type="success" plain v-else>+ 关注</el-button>
               </div>
             </el-tab-pane>
             <el-tab-pane label="关注者" name="follwers">
               <div class="follwers" v-for="(item, index) in concern" :key="index">
-                <img src="@/static/images/OIP-C.jpg" alt="" class="headPhoto">
-                <router-link to="user/1">{{item}}</router-link>
+                <div class="info">
+                  <img src="@/static/images/OIP-C.jpg" alt="" class="headPhoto">
+                  <router-link to="/user/1">{{item.name}}</router-link>
+                </div>
+                <el-button type="success" v-if="item.type">√ 已关注</el-button>
+                <el-button type="success" plain v-else>+ 关注</el-button>
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -48,7 +54,24 @@ export default {
   data() {
     return {
       activeName: 'article',
-      concern: ['姜尘', '刘伟', '江小鱼', '摸鱼大师']
+      concern: [
+        {
+          name: '姜尘',
+          type: true
+        },
+        {
+          name: '刘伟',
+          type: true
+        },
+        {
+          name: '摸鱼',
+          type: true
+        },
+        {
+          name: '菜鸟',
+          type: true
+        }
+      ]
     }
   },
   methods: {
@@ -99,12 +122,20 @@ export default {
   .concern, .follwers {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 5px 0;
     border: 1px solid #f1f1f1;
     border-radius: 10px;
     margin-bottom: 10px;
+    .info {
+      display: flex;
+      align-items: center;
+    }
     .headPhoto {
       margin: 0 10px;
+    }
+    .el-button {
+      margin-right: 20px;
     }
   }
 }
