@@ -53,7 +53,7 @@
             <!-- 用户评论区 -->
             <div class="user_remark">
               <img src="@/static/images/OIP-C.jpg" alt="用户头像" class="user_photo">
-              <el-input v-model="user_remark" placeholder="请输入内容"></el-input>
+              <el-input v-model="user_remark" placeholder="请输入内容" maxlength="50" show-word-limit></el-input>
               <el-button type="primary" @click="release">发布评论</el-button>
             </div>
             <!-- 评论区 -->
@@ -61,27 +61,31 @@
               <el-card class="comment box-card" v-for="(item, index) in remark" :key="index">
                 <p class="remarkName">
                   <img src="@/static/images/OIP-C.jpg" alt="" class="user_photo">
-                  <router-link to="/author">{{item.name}}</router-link>
+                  <router-link to="/user/1">{{item.name}}</router-link>
                   <span class="el-icon-time">&nbsp;{{item.time}}</span>
                 </p>
                 <p class="content" @click="observer">{{item.content}}</p>
                 <el-button class="reply" type="text" v-show="replys" @click="reply">回复</el-button>
+                <div class="replyInput" v-show="!replys">
+                  <el-input v-model="replyInput" placeholder="请输入内容" maxlength="50" show-word-limit></el-input>
+                  <el-button type="primary">回复</el-button>
+                </div>
                 <!-- 回复 -->
-                <div v-if="item.reply != []">
-                  <el-card class="comment box-card" v-for="(item1, index1) in item.reply" :key="index1">
+                <div v-if="item.reply != []" class="comment">
+                  <div  v-for="(item1, index1) in item.reply" :key="index1">
                     <p class="remarkName">
                       <img src="@/static/images/OIP-C.jpg" alt="" class="user_photo">
-                      <router-link to="/author">{{item1.responder}}</router-link>
+                      <router-link to="/user/1">{{item1.responder}}</router-link>
                       <span>&nbsp;回复&nbsp;</span>
-                      <router-link to="/author">{{item1.reviewers}}</router-link>
+                      <router-link to="/user/1">{{item1.reviewers}}</router-link>
                       <span class="el-icon-time">&nbsp;{{item1.time}}</span>
                     </p>
                     <p class="content" @click="observer">{{item1.content}}</p>
                     <el-button class="reply" type="text" v-show="replys" @click="reply">回复</el-button>
-                  </el-card>
-                  <div class="replyInput" v-show="!replys">
-                    <el-input v-model="replyInput" placeholder="请输入内容"></el-input>
-                    <el-button type="primary">回复</el-button>
+                    <div class="replyInput" v-show="!replys">
+                      <el-input v-model="replyInput" placeholder="请输入内容" maxlength="50" show-word-limit></el-input>
+                      <el-button type="primary">回复</el-button>
+                    </div>
                   </div>
                 </div>
               </el-card>
@@ -126,11 +130,13 @@ export default {
     posts() {
       console.log(this.postsId);
     },
-    observer() {
-      this.replys = true
+    observer(e) {
+      e.currentTarget.nextElementSibling.nextElementSibling.style.display = 'none';
+      e.currentTarget.nextElementSibling.style.display = 'block';
     },
-    reply() {
-      this.replys = !this.replys
+    reply(e) {
+      e.currentTarget.style.display = 'none';
+      e.currentTarget.nextElementSibling.style.display = 'block';
     },
     release() {
       if(this.user_remark != '' && this.user_remark.trim() != '') {
@@ -215,7 +221,7 @@ export default {
     }
       .comment {
         width: 100%;
-        margin-top: 20px;
+        margin-top: 40px;
         .remarkName {
           margin-bottom: 10px;
           display: flex;
@@ -238,6 +244,7 @@ export default {
           display: flex;
           margin-top: 20px;
           .el-input {
+            width: 85%;
             margin-right: 20px;
           }
         }

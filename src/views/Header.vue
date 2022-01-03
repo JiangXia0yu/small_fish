@@ -236,6 +236,7 @@ export default {
   align-items: center;
   border-bottom: 1px solid #fff !important;
   z-index: 999;
+  background-color: rgba($color: #ffffff, $alpha: 1.0);
   // logo
   img {
     height: 56px;

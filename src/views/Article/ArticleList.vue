@@ -22,7 +22,7 @@
             <div class="message">
               <span class="el-icon-time">&nbsp;{{item.date}}</span>
               <span class="el-icon-view">&nbsp;{{item.browse}}</span>
-              <span class="el-icon-time">&nbsp;{{item.praise}}</span>
+              <!-- <span class="el-icon-time">&nbsp;{{item.praise}}</span> -->
               <span class="el-icon-chat-dot-square">&nbsp;{{item.comment}}</span>
             </div>
           </div>
