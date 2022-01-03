@@ -1,11 +1,11 @@
 # jc
 
-## Project setup
+## 首先，将项目克隆至本地，使用 npm install 进行 node_modules 包安装
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 装包完毕后，进入项目目录，使用以下代码运行项目即可
 ```
 npm run serve
 ```
