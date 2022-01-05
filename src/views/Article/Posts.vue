@@ -58,7 +58,7 @@
             </div>
             <!-- 评论区 -->
             <div class="comments_section">
-              <el-card class="comment box-card" v-for="(item, index) in remark" :key="index">
+              <el-card class="comment box-card" v-for="(item, index) in $store.state.remark" :key="index">
                 <p class="remarkName">
                   <img src="@/static/images/OIP-C.jpg" alt="" class="user_photo">
                   <router-link to="/user/1">{{item.name}}</router-link>
@@ -68,7 +68,7 @@
                 <el-button class="reply" type="text" v-show="replys" @click="reply">回复</el-button>
                 <div class="replyInput" v-show="!replys">
                   <el-input v-model="replyInput" placeholder="请输入内容" maxlength="50" show-word-limit></el-input>
-                  <el-button type="primary">回复</el-button>
+                  <el-button type="primary" @click="release">回复</el-button>
                 </div>
                 <!-- 回复 -->
                 <div v-if="item.reply != []" class="comment">
@@ -84,7 +84,7 @@
                     <el-button class="reply" type="text" v-show="replys" @click="reply">回复</el-button>
                     <div class="replyInput" v-show="!replys">
                       <el-input v-model="replyInput" placeholder="请输入内容" maxlength="50" show-word-limit></el-input>
-                      <el-button type="primary">回复</el-button>
+                      <el-button type="primary" @click="release">回复</el-button>
                     </div>
                   </div>
                 </div>
@@ -110,26 +110,21 @@ export default {
       remark: [],
       user_remark: '',
       replyInput: '',
-      replys: true
+      replys: true,
+      isShowLogin: true,
     }
   },
   created() {
     let state = JSON.parse(localStorage.getItem('state'))
     this.postsId = state.postsId
     this.list = articleList.articleList
-    this.remark = remark.remark
+    this.$store.state.remark = remark.remark
     this.animate = true;
-    console.log('加载动画执行中');
   },
   mounted() {
     this.animate = false;
-    console.log(this.postsId);
-    console.log('加载动画执行完毕');
   },
   methods: {
-    posts() {
-      console.log(this.postsId);
-    },
     observer(e) {
       e.currentTarget.nextElementSibling.nextElementSibling.style.display = 'none';
       e.currentTarget.nextElementSibling.style.display = 'block';
@@ -139,10 +134,42 @@ export default {
       e.currentTarget.nextElementSibling.style.display = 'block';
     },
     release() {
-      if(this.user_remark != '' && this.user_remark.trim() != '') {
-        console.log('123');
+      let token = JSON.parse(localStorage.getItem('token'))
+      if(token) {
+        if(this.user_remark != '' && this.user_remark.trim() != '') {
+          this.$message({
+            message: '评论成功!',
+            type: 'success'
+          });
+          this.$store.state.remark.unshift({
+            imgUrl: "@/static/images/OIP-C.jpg",
+            name: "码农小胡",
+            time: new Date(),
+            content: this.user_remark,
+            reply: []
+          })
+          window.localStorage.setItem('state', JSON.stringify(this.$store.state))
+          console.log(this.$store.state);
+          this.user_remark = ''
+        }else if(this.replyInput != '' && this.replyInput.trim() != '') {
+          this.$message({
+            message: '回复评论成功!',
+            type: 'success'
+          });
+          this.replyInput = ''
+        }else {
+          this.$message({
+            message: '评论不能为空!',
+            type: 'warning'
+          });
+        }
+      }else {
+        this.showLogin()
       }
-    }
+    },
+    showLogin() {
+      this.$emit('showLogin', this.isShowLogin)
+    },
   },
   components: {
     Aside
@@ -221,7 +248,7 @@ export default {
     }
       .comment {
         width: 100%;
-        margin-top: 40px;
+        margin-top: 30px;
         .remarkName {
           margin-bottom: 10px;
           display: flex;

@@ -6,7 +6,7 @@
     <el-skeleton :rows="6" animated v-if="animate">
       <el-skeleton-item variant="text" style="width: 240px; height: 240px;" />
     </el-skeleton>
-    <router-view v-else/>
+    <router-view v-else  @showLogin="showLogin"/>
   </div>
 </template>
 
@@ -24,6 +24,8 @@ export default {
     let token = JSON.parse(localStorage.getItem('token'))
     if(token) {
       this.isLogin = false
+      this.$store.state.isLogin = this.isLogin
+      window.localStorage.setItem('state', JSON.stringify(this.$store.state))
     }
   },
   mounted() {
@@ -32,6 +34,9 @@ export default {
   methods: {
     showLogin(msg) {
       this.isLogin = msg
+      this.$store.state.isLogin = this.isLogin
+      window.localStorage.setItem('state', JSON.stringify(this.$store.state))
+      console.log('12');
     }
   },
   components: {

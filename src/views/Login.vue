@@ -115,8 +115,8 @@ export default {
         ]
       },
       loginruleForm: {
-        pass: '',
-        account: ''
+        pass: '666666',
+        account: 'admin'
       },
       loginrules: {
         pass: [
@@ -207,11 +207,12 @@ export default {
   top: 0;
   z-index: 9999;
   width: 100%;
-  height: 975px;
+  height: 1078px;
   background-color: rgba($color: #000000, $alpha: .4);
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   .box-card {
     width: 20%;
     .item {

@@ -10,7 +10,8 @@ export default new Vuex.Store({
     isTheme: false,
     postsId: 1,
     token: '',
-    user: []
+    user: [],
+    remake: []
   },
   mutations: {
   },
