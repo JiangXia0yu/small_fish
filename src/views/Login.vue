@@ -161,6 +161,8 @@ export default {
     loginsubmitForm(formName) {
       let account = this.loginruleForm.account;
       let pass = this.loginruleForm.pass;
+      console.log(account);
+      console.log(pass);
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if(this.user.username != account && this.user.password != pass) {

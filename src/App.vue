@@ -26,6 +26,8 @@ export default {
       this.isLogin = false
       this.$store.state.isLogin = this.isLogin
       window.localStorage.setItem('state', JSON.stringify(this.$store.state))
+    }else {
+      localStorage.setItem('token', false)
     }
   },
   mounted() {
